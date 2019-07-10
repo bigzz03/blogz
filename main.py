@@ -11,12 +11,17 @@ db = SQLAlchemy(app)
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text)
-    body = db.Column(db.Text)
+    title = db.Column(db.String(120))
+    date = db.Column(db.String(10))
+    content = db.Column(db.String(50000))
 
-    def __init__(self, title, body):
+    def __init__(self, title, date, content):
         self.title = title
-        self.body = body
+        self.date = date
+        self.content = content
+
+    def __repr__(self):
+        return '<Blog %r>' % self.title, self.date, self.content
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -44,23 +49,17 @@ def addnew():
         entry_title = request.form['title']
         entry_date = request.form['date']
         entry_content = request.form['content']
-        
-        title_error = ''
-        body_error = ''
 
-        if len(entry_title) < 1:
-            title_error = 'You must enter a title.'
-            #return redirect('/addnew')
-        if len(entry_content) < 1:
-            body_error = 'You must enter a body'
-            #return redirect('/addnew')
+        if len(entry_title) < 1 or len(entry_content) < 1:
+            flash("Title and content are required!")
+            return redirect('/addnew')
 
         entry = Blog(entry_title, entry_date, entry_content)
         db.session.add(entry)
         db.session.commit()
 
-        return render_template('blog_entry.html', title= 'Blog Entry', entry= entry)
-
+        return render_template('blog_entry.html', title="Blog Entry", entry=entry)
+        
     else:
         return render_template('addnew.html')
 

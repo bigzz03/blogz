@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{title}}</title>
+    </head>
+<body>
+        <div class="sidenav">
+            <a href="/">Home</a>
+            <a href="/addnew">Add New</a>
+            <a href="/blog">Blog</a>
+        </div>
+
+        <div class="content">                
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+
+    {% block content %}
+    {% endblock %}
+        </div>
+            
+</body>
+</html>
