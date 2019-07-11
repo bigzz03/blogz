@@ -4,7 +4,10 @@
     <h2>Add new post...</h2>
     <form method='post'>
         <label>
-            Title: <input type="text" name='title' /> Date: <input type="date" name='date' /><p></p>
+            Title: <input type="text" name='title' /> 
+            <span class="error">{{title_error}}</span>
+            Date: <input type="date" name='date' /><p></p>
+            <span class="error">{{body_error}}</span>
             Create your post!
             <input type="textarea" name='content' />
         </label>

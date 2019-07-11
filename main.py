@@ -45,23 +45,33 @@ def blog():
 
 @app.route('/addnew', methods=['POST', 'GET'])
 def addnew():
+    if request.method == 'GET':
+        return render_template('addnew.html', title= "New Entry")
+
     if request.method == 'POST':
         entry_title = request.form['title']
         entry_date = request.form['date']
         entry_content = request.form['content']
-
-        if len(entry_title) < 1 or len(entry_content) < 1:
-            flash("Title and content are required!")
-            return redirect('/addnew')
-
         entry = Blog(entry_title, entry_date, entry_content)
-        db.session.add(entry)
-        db.session.commit()
 
-        return render_template('blog_entry.html', title="Blog Entry", entry=entry)
-        
-    else:
-        return render_template('addnew.html')
+        title_error = ''
+        body_error = ''
+
+        if len(entry_title) == 0:
+            title_error = "You must enter a title for your post."
+        if len(entry_content) == 0:
+            body_error = "You must enter some text for the body."
+
+        if not title_error and not body_error:    
+            db.session.add(entry)
+            db.session.commit()
+            return redirect('/blog:id={}'.format(entry.id))
+
+        else:
+            blogs= Blog.query.all()
+            return render_template('addnew.html', title= 'Add new post...', blogs= blogs,
+                entry_title= entry_title, title_error= title_error,
+                entry_content= entry_content, body_error= body_error)
 
 
 
