@@ -65,7 +65,7 @@ def addnew():
         if not title_error and not body_error:    
             db.session.add(entry)
             db.session.commit()
-            return redirect('/blog:id={}'.format(entry.id))
+            return redirect('/blog?id={}'.format(entry.id))
 
         else:
             blogs= Blog.query.all()
