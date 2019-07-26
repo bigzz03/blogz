@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Build-a-Blog</h2>
-    prep for blogzzzzzz
+    <h2>Blogz</h2>
+    This is Blogz.  In order to create your own blogs you will need to create an account.<br>
+    You can view other users blogs below.<p></p>
+
+    {% if users|length == 0 %}
+    <p>There have been no blog posts, you can create an account to be the first to post.</p>
+    {% else %}
+
+    <ul>
+        {% for user in users %}
+            <li>
+                <a class="titles" href="/blog?user_id={{user.id}}">{{ user.username }}</class></a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+    
 {% endblock %}
