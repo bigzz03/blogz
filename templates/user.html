@@ -2,10 +2,10 @@
 
 {% block content %}
 
-    <h2>Blog Entries by {{author}}</h2>
+    <h2>Blog Entries by {{blogs.user}}</h2>
 
     {% if blogs|length == 0 %}
-    <p>No blog entries by {{author}} yet!</p>
+    <p>No blog entries by {{blogs.user}} yet!</p>
 
     {% else %}
 
@@ -15,7 +15,7 @@
             </a>
             <p>{{blog.body}}</p>
             <p class="blog_author">written by 
-                <a href="./blog?user={{author}}">{{author}}</a>
+                <a class="titles" href="/blog?user_id={{user.id}}">{{blog.owner.username}}</class></a>
             </p>
             <hr />
         {% endfor %}

@@ -101,37 +101,37 @@ def addnew():
         entry_title = request.form["title"]
         entry_date = request.form["date"]
         entry_content = request.form["content"]
-        if (not entry_title) or (not entry_content):
+        if not entry_title or not entry_content:
             flash("Title and content are required.", 'error')
             return redirect('/addnew')
         else:
             blog = Blog(entry_title, entry_date, entry_content, owner)
             db.session.add(blog)
             db.session.commit()
-            username = User.query.filter_by(id=blog.owner_id).first()
-            return redirect('/blog?id={}'.format(owner.id))
+            return redirect('/blog?id={}'.format(blog.id))
 
 @app.route('/blog', methods=['GET', 'POST'])
 def blog():
-    blog_post = Blog.query.all()
+    blogs = Blog.query.all()
     users = User.query.all()
     blog_id = request.args.get("id")
     user_id = request.args.get("user_id")
     
     if blog_id:
         blog_post = Blog.query.filter_by(id=blog_id).all()
-        for blog in blog_post:
+        for blog in blogs:
             user_id = blog.owner_id
             user = User.query.filter_by(id=user_id).first()
 
         return render_template('blog_entry.html',blog_post=blog_post,user=user)
     if user_id:
-        user = User.query.filter_by(id=user_id).first()
-        blog_post = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('user.html',blog_post=blog_post,user=user)
+        author = request.args.get('user')
+        user = User.query.filter_by(username=author).first()
+        blogs = Blog.query.filter_by(owner_id=user_id).all()
+        return render_template('user.html',blogs=blogs,user=user)
 
     else:
-        return render_template('blog.html', blog_post=blog_post,users=users)
+        return render_template('blog.html', blogs=blogs,users=users)
 
 @app.route('/logout')
 def logout():

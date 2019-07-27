@@ -6,7 +6,7 @@
         <h3>{{blog.title}}</h3>    
         <p>{{blog.content}}</p>
         <p class="blog_owner">Posted by
-            <a href="./blog?user={{blog.owner.username}}">{{blog.owner.username}}</a>
+            <a href="./blog?user={{blog.id}}">{{blog.owner.username}}</a>
         </p>
     {% endfor %}
 
