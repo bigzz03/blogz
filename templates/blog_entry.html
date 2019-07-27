@@ -2,8 +2,12 @@
 
 {% block content %}
 
-<h3>{{entry.title}}</h3><p></p>
-Posted: {{entry.date}}<p></p>
-{{entry.content}}
+    {% for blog in blog_post%}
+        <h3>{{blog.title}}</h3>    
+        <p>{{blog.content}}</p>
+        <p class="blog_owner">Posted by
+            <a href="./blog?user={{blog.owner.username}}">{{blog.owner.username}}</a>
+        </p>
+    {% endfor %}
 
 {% endblock %}
